@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MAISON — Curated Luxury Fashion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Raleway:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-left">
+      <span class="nav-link">Collections</span>
+      <span class="nav-link">Editorial</span>
+    </div>
+    <div class="nav-logo">MAISON</div>
+    <div class="nav-right">
+      <span class="nav-link" id="addProductBtn">+ Curate</span>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <span class="toggle-icon">◐</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-grain"></div>
+      <div class="hero-gradient"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-overline">SS '26 Collection</p>
+      <h1 class="hero-title">
+        <span class="line">Wear the</span>
+        <span class="line italic">Silence</span>
+        <span class="line">of Luxury</span>
+      </h1>
+      <p class="hero-sub">Curated pieces for the discerning eye. Effortless. Eternal.</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="document.getElementById('collections').scrollIntoView({behavior:'smooth'})">Explore Collection</button>
+        <button class="btn-ghost" id="heroAddBtn">Add Your Piece +</button>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+    <!-- Floating editorial labels -->
+    <div class="hero-badge top-right">Luxury Curation</div>
+    <div class="hero-badge bottom-left">Est. 2026</div>
+  </section>
+
+  <!-- TICKER -->
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span>Curated Luxury</span><span class="dot">·</span>
+      <span>Affiliate Picks</span><span class="dot">·</span>
+      <span>Fashion Forward</span><span class="dot">·</span>
+      <span>Minimal. Eternal.</span><span class="dot">·</span>
+      <span>Curated Luxury</span><span class="dot">·</span>
+      <span>Affiliate Picks</span><span class="dot">·</span>
+      <span>Fashion Forward</span><span class="dot">·</span>
+      <span>Minimal. Eternal.</span><span class="dot">·</span>
+    </div>
+  </div>
+
+  <!-- COLLECTIONS SECTION -->
+  <section class="collections" id="collections">
+    <div class="section-header">
+      <span class="section-eyebrow">The Edit</span>
+      <h2 class="section-title">Curated Pieces</h2>
+      <p class="section-desc">Each product is hand-selected for quality, aesthetic, and value.</p>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="amazon">Amazon</button>
+      <button class="filter-btn" data-filter="flipkart">Flipkart</button>
+      <button class="filter-btn" data-filter="meesho">Meesho</button>
+      <button class="filter-btn" data-filter="other">Other</button>
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <div class="product-grid" id="productGrid">
+      <!-- Products injected by JS -->
+    </div>
+
+    <div class="empty-state" id="emptyState">
+      <div class="empty-icon">✦</div>
+      <p class="empty-title">No pieces curated yet</p>
+      <p class="empty-sub">Paste a product link below to begin your collection</p>
+      <button class="btn-primary" id="emptyAddBtn">Start Curating</button>
+    </div>
+  </section>
+
+  <!-- ADD PRODUCT MODAL -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose">×</button>
+      <div class="modal-header">
+        <span class="modal-eyebrow">New Entry</span>
+        <h3 class="modal-title">Curate a Product</h3>
+      </div>
+
+      <!-- STEP 1: URL INPUT -->
+      <div class="modal-step" id="step1">
+        <p class="modal-hint">Paste any Amazon, Flipkart, or Meesho product link</p>
+        <div class="input-group">
+          <input type="url" id="productUrl" class="modal-input" placeholder="https://www.amazon.in/product..." />
+          <button class="btn-primary btn-sm" id="fetchBtn">
+            <span id="fetchBtnText">Extract →</span>
+            <span id="fetchSpinner" class="spinner hidden"></span>
+          </button>
+        </div>
+        <div class="divider"><span>or enter manually</span></div>
+        <button class="btn-ghost btn-sm" id="manualToggle">Fill details manually</button>
+      </div>
+
+      <!-- STEP 2: PRODUCT FORM -->
+      <div class="modal-step hidden" id="step2">
+        <div class="preview-strip" id="previewStrip"></div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label>Product Title</label>
+            <input type="text" id="inputTitle" class="modal-input" placeholder="e.g. Floral Silk Midi Dress" />
+          </div>
+          <div class="form-field">
+            <label>Price</label>
+            <input type="text" id="inputPrice" class="modal-input" placeholder="e.g. ₹1,499" />
+          </div>
+          <div class="form-field full">
+            <label>Image URL</label>
+            <input type="url" id="inputImage" class="modal-input" placeholder="https://..." />
+          </div>
+          <div class="form-field full">
+            <label>Affiliate / Product Link</label>
+            <input type="url" id="inputLink" class="modal-input" placeholder="https://..." />
+          </div>
+          <div class="form-field">
+            <label>Category / Store</label>
+            <select id="inputCategory" class="modal-input">
+              <option value="amazon">Amazon</option>
+              <option value="flipkart">Flipkart</option>
+              <option value="meesho">Meesho</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- CAPTION GENERATOR -->
+        <div class="caption-section">
+          <button class="btn-ghost btn-sm" id="generateCaptionBtn">✦ Generate Caption & Hashtags</button>
+          <div class="caption-output hidden" id="captionOutput">
+            <div class="caption-box" id="captionText"></div>
+            <div class="hashtag-box" id="hashtagText"></div>
+            <button class="btn-ghost btn-xs" id="copyCaption">Copy Caption</button>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn-ghost" id="backBtn">← Back</button>
+          <button class="btn-primary" id="saveProductBtn">Add to Collection</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo">MAISON</div>
+    <p class="footer-tagline">Curated with intention. Linked with purpose.</p>
+    <p class="footer-note">All links may be affiliate links. We earn a small commission at no extra cost to you.</p>
+    <div class="footer-bottom">
+      <span>© 2026 Maison Curation</span>
+      <span>Built for fashion lovers</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
